@@ -1,7 +1,9 @@
-# sitra
+# libsitra
 
-Install Fonts from FontSource.
+A library to list and manage online fonts on your system
 
-## Building the app
+## Bulding
 
-Use gnome builder.
+meson setup build
+ninja -C build
+sudo ninja -C build install
