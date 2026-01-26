@@ -73,10 +73,10 @@ namespace Libsitra {
             FileUtils.get_contents (google_fonts_json_path, out google_fonts_json);
 
             // Parse the JSON data
-            load_from_json (fonts_json, google_fonts_json);
+            load (fonts_json, google_fonts_json);
         }
 
-        public void load_from_json (string fonts_json, string google_fonts_json) throws Error {
+        public void load (string fonts_json, string google_fonts_json) throws Error {
             var google_files_map = new Gee.HashMap<string, Gee.Map<string, string>> ();
             var google_parser = new Json.Parser ();
             google_parser.load_from_data (google_fonts_json);
@@ -113,15 +113,15 @@ namespace Libsitra {
             }
         }
 
-        public Font? get_font (string id) {
+        public Font? font (string id) {
             return fonts.get (id);
         }
 
-        public Gee.Map<string, Font> get_all_fonts () {
+        public Gee.Map<string, Font> list () {
             return fonts;
         }
 
-        public Gee.List<string> get_font_names () {
+        public Gee.List<string> list_names () {
             var font_list = new Gee.ArrayList<Font> ();
             font_list.add_all (fonts.values);
 
@@ -142,27 +142,6 @@ namespace Libsitra {
                 names.add (font.family);
             }
             return names;
-        }
-
-        public string?[] get_font_names_array () {
-            var names = (string[]) get_font_names ().to_array ();
-            var result = new string?[names.length + 1];
-            for (int i = 0; i < names.length; i++) {
-                result[i] = names[i];
-            }
-            result[names.length] = null;
-            return result;
-        }
-
-        public string get_font_cdn_link (Font font, string subset, int? weight = null, bool italic = false) {
-            if (font.variable) {
-                string style = italic ? "italic" : "normal";
-                return "https://cdn.jsdelivr.net/fontsource/fonts/%s:vf@latest/%s-wght-%s.woff2".printf(font.id, subset, style);
-            } else {
-                int w = weight != null ? weight : 400;
-                string style = italic ? "italic" : "normal";
-                return "https://cdn.jsdelivr.net/fontsource/fonts/%s@latest/%s-%d-%s.woff2".printf(font.id, subset, w, style);
-            }
         }
     }
 }

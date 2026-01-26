@@ -1,6 +1,5 @@
 # Libsitra Sources
 libsitra_sources = [
-    'base_info.vala',
     'categories.vala',
     'licenses.vala',
     'font.vala',

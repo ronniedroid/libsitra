@@ -18,24 +18,34 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
+using Gee;
+
 [CCode (gir_namespace = "Libsitra", gir_version = "0.1")]
 namespace Libsitra {
+    public class Licenses : Object {
+        private HashMap<string, string> data;
 
-public class Licenses : BaseInfo {
-    public Licenses () {}
+        public Licenses () {
+            data = new HashMap<string, string> ();
+            data["mit"] = "Permissive licence allowing almost unrestricted use, modification, and distribution.";
+            data["OFL-1.1"] = "Free to use, modify, and distribute, with conditions: no selling and original licence must be included.";
+            data["Apache-2.0"] = "Permissive, requires attribution, notice of changes, and inclusion of NOTICE file. Modified code can use a different licence.";
+            data["UFL-1.0"] = "Permissive, requires attribution and licence file.";
+            data["CC.0-1.0"] = "Permissive license allowing unrestricted use, modification, and distribution.";
+            data["Unlicense"] = "Permissive license allowing unrestricted use, modification, and distribution.";
+        }
 
-    protected override void initialize_data () {
-        data_map["mit"] = "Permissive licence allowing almost unrestricted use, modification, and distribution.";
-        data_map["OFL-1.1"] = "Free to use, modify, and distribute, with conditions: no selling and original licence must be included.";
-        data_map["Apache-2.0"] = "Permissive, requires attribution, notice of changes, and inclusion of NOTICE file. Modified code can use a different licence.";
-        data_map["UFL-1.0"] = "Permissive, requires attribution and licence file.";
-        data_map["CC.0-1.0"] = "Permissive license allowing unrestricted use, modification, and distribution.";
-        data_map["Unlicense"] = "Permissive license allowing unrestricted use, modification, and distribution.";
+        public string describe (Font font) {
+            return data.has_key (font.license) ? data[font.license] : "No description available";
+        }
+
+        public string[] titles () {
+            var keys = new string[data.size];
+            int i = 0;
+            foreach (var key in data.keys) {
+                keys[i++] = key;
+            }
+            return keys;
+        }
     }
-
-    public override string get_id (Libsitra.Font font) {
-        return font.license;
-    }
-}
-
 }

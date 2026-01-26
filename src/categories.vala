@@ -23,24 +23,29 @@ using Gee;
 [CCode (gir_namespace = "Libsitra", gir_version = "0.1")]
 namespace Libsitra {
 
-public class Categories : BaseInfo {
-    public Categories () {}
-
-    protected override void initialize_data () {
-        data_map["sans-serif"] = "Fonts without decorative strokes; clean and modern, commonly used for UI and body text.";
-        data_map["display"] = "Decorative fonts designed for headlines and large sizes, not suitable for long text.";
-        data_map["serif"] = "Fonts with decorative strokes at the ends of letters; traditional and often used in print.";
-        data_map["handwriting"] = "Fonts that mimic handwritten or cursive styles; informal and expressive.";
-        data_map["monospace"] = "Fonts where all characters have equal width; commonly used for code and terminals.";
-        data_map["icons"] = "Symbol-based fonts containing pictograms or UI icons instead of letters.";
+public class Categories : Object {
+    private HashMap<string, string> data;
+    public Categories () {
+        data = new HashMap<string, string> ();
+        data["sans-serif"] = "Fonts without decorative strokes; clean and modern, commonly used for UI and body text.";
+        data["display"] = "Decorative fonts designed for headlines and large sizes, not suitable for long text.";
+        data["serif"] = "Fonts with decorative strokes at the ends of letters; traditional and often used in print.";
+        data["handwriting"] = "Fonts that mimic handwritten or cursive styles; informal and expressive.";
+        data["monospace"] = "Fonts where all characters have equal width; commonly used for code and terminals.";
+        data["icons"] = "Symbol-based fonts containing pictograms or UI icons instead of letters.";
     }
 
-    public override string get_id (Libsitra.Font font) {
-        return font.category;
+    public string describe (Font font) {
+        return data.has_key (font.category) ? data[font.category] : "No description available";
     }
 
-    public string[] get_category_labels () {
-        return get_all_keys ();
+    public string[] titles () {
+        var keys = new string[data.size];
+        int i = 0;
+        foreach (var key in data.keys) {
+            keys[i++] = key;
+        }
+        return keys;
     }
 }
 

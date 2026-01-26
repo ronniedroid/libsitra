@@ -72,11 +72,11 @@ public class Library : GLib.Object {
         }
     }
 
-    public bool is_font_installed (string font_id) {
-        return installed_fonts_db.has_group (font_id);
+    public bool is_installed (Font font) {
+        return installed_fonts_db.has_group (font.id);
     }
 
-    public Gee.List<string> get_installed_fonts () {
+    public Gee.List<string> list_installed () {
         var fonts = new ArrayList<string> ();
         foreach (var group in installed_fonts_db.get_groups ()) {
             fonts.add (group);
@@ -84,7 +84,7 @@ public class Library : GLib.Object {
         return fonts;
     }
 
-    public async void install_font (Font font) throws Error {
+    public async void install (Font font) throws Error {
         if (cancellable != null) {
             throw new IOError.BUSY ("An installation is already in progress");
         }
@@ -97,7 +97,7 @@ public class Library : GLib.Object {
         bool success = false;
 
         try {
-            if (is_font_installed (font.id)) {
+            if (is_installed (font)) {
                 throw new IOError.EXISTS ("Font '%s' is already installed".printf (font.family));
             }
 
@@ -146,22 +146,21 @@ public class Library : GLib.Object {
             warning ("Font installation failed for %s: %s", font.family, e.message);
             cancellable = null;
         }
-
         installation_completed (font.family, success, error_msg);
     }
 
-    public void cancel_installation () {
+    public void cancel () {
         if (cancellable != null && !cancellable.is_cancelled ()) {
             cancellable.cancel ();
         }
     }
 
-    public async void uninstall_font (Font font) throws Error {
+    public async void uninstall (Font font) throws Error {
         string? error_msg = null;
         bool success = false;
 
         try {
-            if (!is_font_installed (font.id)) {
+            if (!is_installed (font)) {
                 throw new IOError.NOT_FOUND ("Font '%s' is not installed".printf (font.family));
             }
 
