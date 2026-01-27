@@ -28,5 +28,5 @@ pkg.generate(
     filebase: 'libsitra-0.1',    # Keep the API version (0.1) in the filename
     description: 'Shared library for Sitra application',
     requires: ['glib-2.0', 'gio-2.0', 'gee-0.8', 'libsoup-3.0', 'json-glib-1.0'],
-    variables: 'girdir=${prefix}/' + get_option('datadir') / 'gir-1.0',
+    variables: ['datadir=${prefix}/share', 'vapidir=${datadir}/vala/vapi']
 )

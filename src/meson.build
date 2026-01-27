@@ -6,7 +6,6 @@ libsitra_sources = [
     'fonts.vala',
     'library.vala'
 ]
-
 # Libsitra Dependencies
 libsitra_deps = [
     dependency('glib-2.0'),
@@ -16,21 +15,20 @@ libsitra_deps = [
     dependency('libsoup-3.0'),
     dependency('json-glib-1.0'),
 ]
-
 # Install JSON data files
 install_data(
     'assets/fonts.json',
     'assets/google-fonts.json',
     install_dir: get_option('datadir') / 'libsitra'
 )
-
-# Build Static Library
+# Build Shared Library
 libsitra_lib = shared_library('sitra',
     libsitra_sources,
     dependencies: libsitra_deps,
     version: meson.project_version(),
     soversion: '0',
     install: true,
+    install_dir: [true, true, true, true],
     vala_vapi: 'libsitra-0.1.vapi',
     vala_header: 'libsitra.h',
     vala_gir: 'Libsitra-0.1.gir',

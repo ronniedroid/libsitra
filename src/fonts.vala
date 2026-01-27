@@ -117,31 +117,8 @@ namespace Libsitra {
             return fonts.get (id);
         }
 
-        public Gee.Map<string, Font> list () {
-            return fonts;
-        }
-
-        public Gee.List<string> list_names () {
-            var font_list = new Gee.ArrayList<Font> ();
-            font_list.add_all (fonts.values);
-
-            font_list.sort ((font_a, font_b) => {
-                // Calculate combined score (subsets + weights)
-                int score_a = font_a.subsets.size + font_a.weights.size;
-                int score_b = font_b.subsets.size + font_b.weights.size;
-                int score_diff = score_b - score_a;
-                if (score_diff != 0) {
-                    return score_diff;
-                }
-                // If scores are equal, fall back to alphabetical
-                return font_a.family.collate (font_b.family);
-            });
-
-            var names = new Gee.ArrayList<string> ();
-            foreach (var font in font_list) {
-                names.add (font.family);
-            }
-            return names;
+        public Gee.Collection<Font> collection () {
+            return fonts.values;
         }
     }
 }
