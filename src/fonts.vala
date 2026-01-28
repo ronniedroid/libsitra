@@ -20,8 +20,7 @@
 using Gee;
 
 [CCode (gir_namespace = "Libsitra", gir_version = "0.1")]
-namespace Libsitra {
-    public class Fonts : Object {
+    public class Libsitra.Fonts : Object {
         private Gee.Map<string, Font> fonts;
         private Gee.Set<string> google_fonts;
 
@@ -37,43 +36,20 @@ namespace Libsitra {
         }
 
         private void load_fonts_from_files () throws Error {
-            // Try multiple possible locations for the data files
-            string[] possible_prefixes = {
-                "/usr/local/share/libsitra",  // Default --prefix=/usr/local
-                "/usr/share/libsitra",         // System installation
-                Path.build_filename (Environment.get_current_dir (), "src", "assets")  // Development fallback
-            };
+            try {
+                var fonts_file = File.new_for_uri ("resource:///io/github/ronniedroid/libsitra/fonts.json");
+                var google_file = File.new_for_uri ("resource:///io/github/ronniedroid/libsitra/google-fonts.json");
 
-            string? fonts_json_path = null;
-            string? google_fonts_json_path = null;
+                uint8[] fonts_data;
+                uint8[] google_data;
 
-            // Find the first location where both files exist
-            foreach (var prefix in possible_prefixes) {
-                var fonts_path = Path.build_filename (prefix, "fonts.json");
-                var google_path = Path.build_filename (prefix, "google-fonts.json");
+                fonts_file.load_contents (null, out fonts_data, null);
+                google_file.load_contents (null, out google_data, null);
 
-                if (FileUtils.test (fonts_path, FileTest.EXISTS) &&
-                    FileUtils.test (google_path, FileTest.EXISTS)) {
-                    fonts_json_path = fonts_path;
-                    google_fonts_json_path = google_path;
-                    break;
-                }
+                load ((string)fonts_data, (string)google_data);
+            } catch (Error e) {
+                throw new FileError.NOENT ("Failed to load embedded resources: " + e.message);
             }
-
-            if (fonts_json_path == null || google_fonts_json_path == null) {
-                throw new FileError.NOENT ("Could not find fonts.json and google_fonts.json in any expected location");
-            }
-
-            // Read fonts.json
-            string fonts_json;
-            FileUtils.get_contents (fonts_json_path, out fonts_json);
-
-            // Read google_fonts.json
-            string google_fonts_json;
-            FileUtils.get_contents (google_fonts_json_path, out google_fonts_json);
-
-            // Parse the JSON data
-            load (fonts_json, google_fonts_json);
         }
 
         public void load (string fonts_json, string google_fonts_json) throws Error {
@@ -121,4 +97,3 @@ namespace Libsitra {
             return fonts.values;
         }
     }
-}

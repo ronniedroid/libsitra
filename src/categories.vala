@@ -21,32 +21,28 @@
 using Gee;
 
 [CCode (gir_namespace = "Libsitra", gir_version = "0.1")]
-namespace Libsitra {
+public class Libsitra.Categories : Object {
+    private KeyFile key_file;
 
-public class Categories : Object {
-    private HashMap<string, string> data;
     public Categories () {
-        data = new HashMap<string, string> ();
-        data["sans-serif"] = "Fonts without decorative strokes; clean and modern, commonly used for UI and body text.";
-        data["display"] = "Decorative fonts designed for headlines and large sizes, not suitable for long text.";
-        data["serif"] = "Fonts with decorative strokes at the ends of letters; traditional and often used in print.";
-        data["handwriting"] = "Fonts that mimic handwritten or cursive styles; informal and expressive.";
-        data["monospace"] = "Fonts where all characters have equal width; commonly used for code and terminals.";
-        data["icons"] = "Symbol-based fonts containing pictograms or UI icons instead of letters.";
+        key_file = new KeyFile ();
+        try {
+            var data = resources_lookup_data ("/io/github/ronniedroid/libsitra/categories", ResourceLookupFlags.NONE);
+            key_file.load_from_data ((string)data.get_data (), data.get_size (), KeyFileFlags.NONE);
+        } catch (Error e) {
+            critical ("Could not load categories: %s", e.message);
+        }
     }
 
     public string describe (Font font) {
-        return data.has_key (font.category) ? data[font.category] : "No description available";
+        try {
+            return key_file.get_string (font.category, "description");
+        } catch {
+            return "No description available";
+        }
     }
 
     public string[] titles () {
-        var keys = new string[data.size];
-        int i = 0;
-        foreach (var key in data.keys) {
-            keys[i++] = key;
-        }
-        return keys;
+        return key_file.get_groups ();
     }
-}
-
 }

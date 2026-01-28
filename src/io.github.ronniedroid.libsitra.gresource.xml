@@ -5,6 +5,5 @@
     <file alias="google-fonts.json">assets/google-fonts.json</file>
     <file alias="licenses">assets/licenses</file>
     <file alias="categories">assets/categories</file>
-    <file alias="preview_text">assets/preview_text</file>
   </gresource>
 </gresources>

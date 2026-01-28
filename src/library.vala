@@ -23,9 +23,7 @@ using Soup;
 using GLib;
 
 [CCode (gir_namespace = "Libsitra", gir_version = "0.1")]
-namespace Libsitra {
-
-public class Library : GLib.Object {
+public class Libsitra.Library : GLib.Object {
 
     private const string FONTS_DIR_PATH = ".local/share/fonts";
     private const string TRACKING_DIR_PATH = ".local/share/sitra";
@@ -316,6 +314,4 @@ public class Library : GLib.Object {
             warning ("Failed to save installed fonts database: %s".printf (e.message));
         }
     }
-}
-
 }

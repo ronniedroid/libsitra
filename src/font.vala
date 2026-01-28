@@ -22,9 +22,7 @@ using Gee;
 using Json;
 
 [CCode (gir_namespace = "Libsitra", gir_version = "0.1")]
-namespace Libsitra {
-
-public class Font : GLib.Object {
+public class Libsitra.Font : GLib.Object {
     public string id { get; set; }
     public string family { get; set; }
     public string category { get; set; }
@@ -78,7 +76,5 @@ public class Font : GLib.Object {
         var font = new Font(id, family, category, variable, license, weights, subsets, styles, null);
         return font;
     }
-}
-
 }
 

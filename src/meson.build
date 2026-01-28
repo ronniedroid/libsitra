@@ -6,6 +6,7 @@ libsitra_sources = [
     'fonts.vala',
     'library.vala'
 ]
+
 # Libsitra Dependencies
 libsitra_deps = [
     dependency('glib-2.0'),
@@ -15,15 +16,18 @@ libsitra_deps = [
     dependency('libsoup-3.0'),
     dependency('json-glib-1.0'),
 ]
-# Install JSON data files
-install_data(
-    'assets/fonts.json',
-    'assets/google-fonts.json',
-    install_dir: get_option('datadir') / 'libsitra'
+
+gnome = import('gnome')
+
+libsitra_resources = gnome.compile_resources('libsitra-resources',
+  'io.github.ronniedroid.libsitra.gresource.xml',
+  source_dir: '.',
+  c_name: 'libsitra'
 )
+
 # Build Shared Library
 libsitra_lib = shared_library('sitra',
-    libsitra_sources,
+    libsitra_sources + libsitra_resources,
     dependencies: libsitra_deps,
     version: meson.project_version(),
     soversion: '0',

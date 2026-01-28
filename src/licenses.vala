@@ -21,31 +21,28 @@
 using Gee;
 
 [CCode (gir_namespace = "Libsitra", gir_version = "0.1")]
-namespace Libsitra {
-    public class Licenses : Object {
-        private HashMap<string, string> data;
+public class Libsitra.Licenses : Object {
+    private KeyFile key_file;
 
-        public Licenses () {
-            data = new HashMap<string, string> ();
-            data["mit"] = "Permissive licence allowing almost unrestricted use, modification, and distribution.";
-            data["OFL-1.1"] = "Free to use, modify, and distribute, with conditions: no selling and original licence must be included.";
-            data["Apache-2.0"] = "Permissive, requires attribution, notice of changes, and inclusion of NOTICE file. Modified code can use a different licence.";
-            data["UFL-1.0"] = "Permissive, requires attribution and licence file.";
-            data["CC.0-1.0"] = "Permissive license allowing unrestricted use, modification, and distribution.";
-            data["Unlicense"] = "Permissive license allowing unrestricted use, modification, and distribution.";
+    public Licenses () {
+        key_file = new KeyFile ();
+        try {
+            var data = resources_lookup_data ("/io/github/ronniedroid/libsitra/licenses", ResourceLookupFlags.NONE);
+            key_file.load_from_data ((string)data.get_data (), data.get_size (), KeyFileFlags.NONE);
+        } catch (Error e) {
+            critical ("Could not load categories: %s", e.message);
         }
+    }
 
-        public string describe (Font font) {
-            return data.has_key (font.license) ? data[font.license] : "No description available";
+    public string describe (Font font) {
+        try {
+            return key_file.get_string (font.license, "description");
+        } catch {
+            return "No description available";
         }
+    }
 
-        public string[] titles () {
-            var keys = new string[data.size];
-            int i = 0;
-            foreach (var key in data.keys) {
-                keys[i++] = key;
-            }
-            return keys;
-        }
+    public string[] titles () {
+        return key_file.get_groups ();
     }
 }
