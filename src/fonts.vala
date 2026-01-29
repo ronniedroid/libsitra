@@ -46,15 +46,11 @@ public class Libsitra.Fonts : Object {
             fonts_file.load_contents (null, out fonts_data, null);
             google_file.load_contents (null, out google_data, null);
 
-            load ((string) fonts_data, (string) google_data);
+            var google_files_map = parse_google_fonts ((string) google_data);
+            load_fonts ((string) fonts_data, google_files_map);
         } catch (Error e) {
             throw new FileError.NOENT ("Failed to load embedded resources: " + e.message);
         }
-    }
-
-    public void load (string fonts_json, string google_fonts_json) throws Error {
-        var google_files_map = parse_google_fonts (google_fonts_json);
-        load_fonts (fonts_json, google_files_map);
     }
 
     private Gee.HashMap<string, Gee.Map<string, string>> parse_google_fonts (string json) throws Error {
