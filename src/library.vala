@@ -1,4 +1,4 @@
-/* font_manager.vala
+/* library.vala
  *
  * Copyright 2025 Ronnie Nissan Yousif
  *
@@ -315,3 +315,4 @@ public class Libsitra.Library : GLib.Object {
         }
     }
 }
+

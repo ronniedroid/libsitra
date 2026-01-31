@@ -1,4 +1,4 @@
-/* fonts_manager.vala
+/* fonts.vala
  *
  * Copyright 2025 Ronnie Nissan Yousif
  *
