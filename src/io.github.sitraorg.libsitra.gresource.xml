@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gresources>
-  <gresource prefix="/io/github/ronniedroid/libsitra">
+  <gresource prefix="/io/github/sitraorg/libsitra">
     <file alias="fonts.json">assets/fonts.json</file>
     <file alias="google-fonts.json">assets/google-fonts.json</file>
   </gresource>

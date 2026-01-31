@@ -37,8 +37,8 @@ public class Libsitra.Fonts : Object {
 
     private void load_fonts_from_files () throws Error {
         try {
-            var fonts_file = File.new_for_uri ("resource:///io/github/ronniedroid/libsitra/fonts.json");
-            var google_file = File.new_for_uri ("resource:///io/github/ronniedroid/libsitra/google-fonts.json");
+            var fonts_file = File.new_for_uri ("resource:///io/github/sitraorg/libsitra/fonts.json");
+            var google_file = File.new_for_uri ("resource:///io/github/sitraorg/libsitra/google-fonts.json");
 
             uint8[] fonts_data;
             uint8[] google_data;

@@ -18,7 +18,7 @@ libsitra_deps = [
 gnome = import ('gnome')
 
 libsitra_resources = gnome.compile_resources ('libsitra-resources',
-    'io.github.ronniedroid.libsitra.gresource.xml',
+    'io.github.sitraorg.libsitra.gresource.xml',
     source_dir: '.',
     c_name: 'libsitra'
 )
